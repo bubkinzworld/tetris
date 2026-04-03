@@ -56,7 +56,7 @@ function updateMusicButton() {
 }
 
 function updatePauseButton() {
-  pauseButton.textContent = isPaused ? "Resume" : "Pause";
+  pauseButton.textContent = isPaused ? "Resume Game" : "Pause Game";
 }
 
 function stopMusic() {
@@ -415,6 +415,28 @@ function togglePause() {
   updatePauseButton();
 }
 
+function bindPress(button, handler) {
+  let touchHandled = false;
+
+  button.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    touchHandled = true;
+    handler();
+
+    window.setTimeout(() => {
+      touchHandled = false;
+    }, 350);
+  }, { passive: false });
+
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (touchHandled) {
+      return;
+    }
+    handler();
+  });
+}
+
 document.addEventListener("keydown", (event) => {
   switch (event.code) {
     case "KeyA":
@@ -442,35 +464,35 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-startButton.addEventListener("click", () => {
+bindPress(startButton, () => {
   restartGame();
 });
 
-pauseButton.addEventListener("click", () => {
+bindPress(pauseButton, () => {
   togglePause();
 });
 
-musicButton.addEventListener("click", () => {
+bindPress(musicButton, () => {
   toggleMusic();
 });
 
-leftButton.addEventListener("click", () => {
+bindPress(leftButton, () => {
   moveActivePiece(-1);
 });
 
-rightButton.addEventListener("click", () => {
+bindPress(rightButton, () => {
   moveActivePiece(1);
 });
 
-rotateButton.addEventListener("click", () => {
+bindPress(rotateButton, () => {
   rotateActivePiece(1);
 });
 
-downButton.addEventListener("click", () => {
+bindPress(downButton, () => {
   softDrop();
 });
 
-dropButton.addEventListener("click", () => {
+bindPress(dropButton, () => {
   hardDrop();
 });
 
