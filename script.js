@@ -18,6 +18,7 @@ const boardElement = document.getElementById("board");
 const scoreElement = document.getElementById("score");
 const linesElement = document.getElementById("lines");
 const startButton = document.getElementById("startButton");
+const pauseButton = document.getElementById("pauseButton");
 const musicButton = document.getElementById("musicButton");
 const leftButton = document.getElementById("leftButton");
 const rightButton = document.getElementById("rightButton");
@@ -34,6 +35,7 @@ let dropTimer = null;
 let audioContext = null;
 let musicNodes = null;
 let musicEnabled = false;
+let isPaused = false;
 let touchStartX = 0;
 let touchStartY = 0;
 let touchTracking = false;
@@ -51,6 +53,10 @@ function createEmptyBoard() {
 
 function updateMusicButton() {
   musicButton.textContent = musicEnabled ? "Pause Music" : "Play Music";
+}
+
+function updatePauseButton() {
+  pauseButton.textContent = isPaused ? "Resume" : "Pause";
 }
 
 function stopMusic() {
@@ -270,6 +276,10 @@ function spawnPiece() {
 }
 
 function stepGame() {
+  if (isPaused) {
+    return;
+  }
+
   if (!activePiece) {
     spawnPiece();
     render();
@@ -289,7 +299,7 @@ function stepGame() {
 }
 
 function rotateActivePiece(direction) {
-  if (!activePiece) {
+  if (!activePiece || isPaused) {
     return;
   }
 
@@ -312,7 +322,7 @@ function rotateActivePiece(direction) {
 }
 
 function moveActivePiece(direction) {
-  if (!activePiece) {
+  if (!activePiece || isPaused) {
     return;
   }
 
@@ -324,7 +334,7 @@ function moveActivePiece(direction) {
 }
 
 function softDrop() {
-  if (!activePiece) {
+  if (!activePiece || isPaused) {
     return;
   }
 
@@ -340,7 +350,7 @@ function softDrop() {
 }
 
 function hardDrop() {
-  if (!activePiece) {
+  if (!activePiece || isPaused) {
     return;
   }
 
@@ -384,8 +394,10 @@ function restartGame() {
   board = createEmptyBoard();
   score = 0;
   linesCleared = 0;
+  isPaused = false;
   scoreElement.textContent = "0";
   linesElement.textContent = "0";
+  updatePauseButton();
   activePiece = null;
   render();
 }
@@ -396,6 +408,11 @@ function startLoop() {
   }
 
   dropTimer = setInterval(stepGame, DROP_INTERVAL_MS);
+}
+
+function togglePause() {
+  isPaused = !isPaused;
+  updatePauseButton();
 }
 
 document.addEventListener("keydown", (event) => {
@@ -427,6 +444,10 @@ document.addEventListener("keydown", (event) => {
 
 startButton.addEventListener("click", () => {
   restartGame();
+});
+
+pauseButton.addEventListener("click", () => {
+  togglePause();
 });
 
 musicButton.addEventListener("click", () => {
@@ -509,5 +530,6 @@ boardElement.addEventListener("touchend", (event) => {
 createBoardUi();
 restartGame();
 updateMusicButton();
+updatePauseButton();
 startLoop();
 stepGame();
