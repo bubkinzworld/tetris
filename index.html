@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="hud">
+      <div>
+        <p class="eyebrow">Arcade Prototype</p>
+        <h1>Tetris</h1>
+        <p class="subtitle">Classic falling blocks, line clears, and quick restarts.</p>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span>Score</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="stat">
+          <span>Lines</span>
+          <strong id="lines">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="board-panel">
+      <div id="board" class="board" aria-label="Game board"></div>
+      <div class="touch-controls" aria-label="Touch controls">
+        <button id="leftButton" type="button" class="touch-button">Left</button>
+        <button id="rotateButton" type="button" class="touch-button touch-button-large">Rotate</button>
+        <button id="rightButton" type="button" class="touch-button">Right</button>
+        <button id="downButton" type="button" class="touch-button">Down</button>
+        <button id="dropButton" type="button" class="touch-button touch-button-wide">Drop</button>
+      </div>
+      <div class="controls">
+        <button id="startButton" type="button">Restart</button>
+        <button id="musicButton" type="button">Play Music</button>
+      </div>
+      <p class="help">
+        Controls:
+        <span><kbd>A</kbd>/<kbd>D</kbd> or arrows move</span>
+        <span><kbd>W</kbd> or <kbd>Up</kbd> rotate</span>
+        <span><kbd>S</kbd> or <kbd>Down</kbd> soft drop</span>
+        <span><kbd>Space</kbd> hard drop</span>
+        <span>Swipe on board to move/drop</span>
+      </p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
